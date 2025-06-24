@@ -197,4 +197,10 @@ roslaunch ORB_SLAM3 launch_agent1.launch
 
 ---
 
+### Use new world 
+^Croot@LP-Boston-12214:~/catkin_ws# echo $GAZEBO_MOD_PATH
+:/root/catkin_ws/src/gazebo_models_worlds_collection/models
+
+export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/root/catkin_ws/src/gazebo_models_worlds_collection/models
+
 ✅ **Done!** Your simulation now runs with 2 autonomous UAVs in Gazebo, each tracked with ORB-SLAM3 and feeding into COVINS for collaborative SLAM processing.
