@@ -55,7 +55,7 @@ Location: `~/catkin_ws/src/hector_quadrotor/hector_quadrotor_demo/launch/`
 ## 2. Motion Command Script for Each Agent
 
 File: `auto_move_agents.py`
-Location: `hector_move/scripts/`
+Location: `/catkin_ws/src/hector_quadrotor/hector_move/scripts/`
 
 ```python
 #!/usr/bin/env python
