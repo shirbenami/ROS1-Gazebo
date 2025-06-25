@@ -158,6 +158,17 @@ Ensure the published topic is `/cmd_vel`.
 
 ---
 
+## if you running the docker image:
+```bash
+
+xhost +local:root
+docker run -it \
+  --env="DISPLAY" \
+  --env="QT_X11_NO_MITSHM=1" \
+  --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+  ros1-gazebo-hector-container-with-template_matching bash
+```
+
 ## ✅ Result
 
 You now have a working indoor quadrotor simulation with:
