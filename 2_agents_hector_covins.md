@@ -4,6 +4,21 @@ This guide walks you through the full setup for simulating **two Hector Quadroto
 
 ---
 
+## if you running the docker image:
+```bash
+
+xhost +local:root
+
+docker run -it \
+  --net=host \
+  --env="DISPLAY=$DISPLAY" \
+  --env="QT_X11_NO_MITSHM=1" \
+  --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+  --volume="$(pwd):/app" \
+  ros1-gazebo-hector-container-with-template_matching \
+  bash
+
+
 ## 1. Launch File to Spawn Two UAVs in Gazebo
 
 File: `gazebo_models_worlds_collection_2_agent.launch`
