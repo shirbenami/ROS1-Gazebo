@@ -162,11 +162,16 @@ Ensure the published topic is `/cmd_vel`.
 ```bash
 
 xhost +local:root
+
 docker run -it \
-  --env="DISPLAY" \
+  --net=host \
+  --env="DISPLAY=$DISPLAY" \
   --env="QT_X11_NO_MITSHM=1" \
   --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
-  ros1-gazebo-hector-container-with-template_matching bash
+  --volume="$(pwd):/app" \
+  ros1-gazebo-hector-container-with-template_matching \
+  bash
+
 ```
 
 ## ✅ Result
