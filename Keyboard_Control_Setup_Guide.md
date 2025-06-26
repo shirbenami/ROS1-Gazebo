@@ -260,6 +260,8 @@ rosservice call /gazebo/unpause_physics
 🎥 Record Sensor Data with rosbag
 ```
 rosbag record /front_cam/camera/image /raw_imu -O test.bag
+
+rosbag record /uav0/front_cam/camera/image /uav0/raw_imu /uav0/ground_truth_to_tf/pose \
 ```
 🔁 Replay the Bag File
 ```
