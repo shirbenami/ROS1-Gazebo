@@ -116,6 +116,70 @@ rosrun hector_move auto_move_agents.py uav0
 rosrun hector_move auto_move_agents.py uav1
 ```
 
+✅ auto_move_agents_walls.py:
+```
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import rospy
+from sensor_msgs.msg import Image
+from geometry_msgs.msg import Twist
+from cv_bridge import CvBridge
+import numpy as np
+
+class UAV0AvoidWalls:
+    def __init__(self):
+        rospy.init_node("uav0_obstacle_avoidance")  # Initialize ROS node
+
+        self.bridge = CvBridge()
+        
+        # Subscribe to depth image and set up publisher for velocity commands
+        self.depth_sub = rospy.Subscriber("/uav0/camera/depth/image_raw", Image, self.depth_callback)
+        self.cmd_pub = rospy.Publisher("/uav0/cmd_vel", Twist, queue_size=1)
+
+        # Minimum distance to wall before taking avoidance action
+        self.min_safe_distance = 1.0  # in meters
+
+    def depth_callback(self, msg):
+        # Convert the depth image from ROS to OpenCV format
+        depth_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="passthrough")
+        depth_array = np.array(depth_image, dtype=np.float32)
+
+        # Get image dimensions
+        height, width = depth_array.shape
+
+        # Define a small central region to check forward distance
+        center_region = depth_array[height//2 - 10:height//2 + 10, width//2 - 10:width//2 + 10]
+
+        # Get the minimum distance in the center region
+        min_distance = np.nanmin(center_region)
+
+        # Create a Twist message for movement
+        twist = Twist()
+
+        if np.isnan(min_distance):
+            rospy.logwarn("No valid depth data!")
+            twist.linear.x = 0.0  # Stop
+        elif min_distance < self.min_safe_distance:
+            rospy.loginfo("Obstacle ahead at {:.2f} m - turning...".format(min_distance))
+            twist.linear.x = 0.0
+            twist.angular.z = 0.5  # Rotate to avoid wall
+        else:
+            rospy.loginfo("Clear path ({:.2f} m) - moving forward.".format(min_distance))
+            twist.linear.x = 0.3  # Move forward
+            twist.angular.z = 0.0
+
+        # Send command to drone
+        self.cmd_pub.publish(twist)
+
+if __name__ == '__main__':
+    try:
+        UAV0AvoidWalls()
+        rospy.spin()
+    except rospy.ROSInterruptException:
+        pass
+```
+
 ---
 
 ## 3. Takeoff Action for Each UAV
