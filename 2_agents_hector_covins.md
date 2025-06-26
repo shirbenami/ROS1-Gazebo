@@ -116,7 +116,7 @@ rosrun hector_move auto_move_agents.py uav0
 rosrun hector_move auto_move_agents.py uav1
 ```
 
-✅ auto_move_agents_walls.py:
+✅ RGBD -auto_move_agents_walls.py:
 ```
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
@@ -129,47 +129,47 @@ import numpy as np
 
 class UAV0AvoidWalls:
     def __init__(self):
-        rospy.init_node("uav0_obstacle_avoidance")  # Initialize ROS node
+        rospy.init_node("uav0_obstacle_avoidance")  # Initialize the node
 
         self.bridge = CvBridge()
-        
-        # Subscribe to depth image and set up publisher for velocity commands
         self.depth_sub = rospy.Subscriber("/uav0/camera/depth/image_raw", Image, self.depth_callback)
         self.cmd_pub = rospy.Publisher("/uav0/cmd_vel", Twist, queue_size=1)
 
-        # Minimum distance to wall before taking avoidance action
-        self.min_safe_distance = 1.0  # in meters
+        self.min_safe_distance = 1.0  # Distance in meters to start avoiding wall
 
     def depth_callback(self, msg):
-        # Convert the depth image from ROS to OpenCV format
+        # Convert ROS depth image to NumPy array
         depth_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="passthrough")
         depth_array = np.array(depth_image, dtype=np.float32)
 
-        # Get image dimensions
+        # Get the shape of the depth image
         height, width = depth_array.shape
 
-        # Define a small central region to check forward distance
+        # Take a small square in the center of the image (looking forward)
         center_region = depth_array[height//2 - 10:height//2 + 10, width//2 - 10:width//2 + 10]
 
-        # Get the minimum distance in the center region
+        # Find the minimum (closest) distance in that center region
         min_distance = np.nanmin(center_region)
 
-        # Create a Twist message for movement
+        # Create a velocity message
         twist = Twist()
 
         if np.isnan(min_distance):
+            # No valid depth data (all values are NaN)
             rospy.logwarn("No valid depth data!")
             twist.linear.x = 0.0  # Stop
         elif min_distance < self.min_safe_distance:
+            # Obstacle is too close - rotate to avoid it
             rospy.loginfo("Obstacle ahead at {:.2f} m - turning...".format(min_distance))
             twist.linear.x = 0.0
-            twist.angular.z = 0.5  # Rotate to avoid wall
+            twist.angular.z = 0.5  # Rotate in place
         else:
+            # No obstacle - move forward
             rospy.loginfo("Clear path ({:.2f} m) - moving forward.".format(min_distance))
             twist.linear.x = 0.3  # Move forward
             twist.angular.z = 0.0
 
-        # Send command to drone
+        # Publish the velocity command
         self.cmd_pub.publish(twist)
 
 if __name__ == '__main__':
