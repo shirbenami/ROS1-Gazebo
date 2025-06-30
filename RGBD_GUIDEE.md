@@ -50,16 +50,32 @@ catkin_make
 
 ## ✅ 3️⃣ Update `run.sh`
 
-In your `run.sh` script, update the **ROS_CLIENT** block to launch the **RGBD** node and enable X11 forwarding.
+In your `run_rgbd.sh` script, update the **ROS_CLIENT** block to launch the **RGBD** node and enable X11 forwarding.
+/home/shirb/ws/covins_ws/src/covins/docker/run_rgbd.sh
 
 **Example:**
 
-\`\`\`bash
+```
 elif [ $ROS_CLIENT -eq 1 ]; then
-    CONFIG_FILE_COMM=$(absPath ${*: -2:1})
-    LAUNCH_FILE=$(absPath ${*: -1})
-    docker run     -it     --rm     --net=host     --env="DISPLAY"     --env="QT_X11_NO_MITSHM=1"     --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw"     --volume "${CONFIG_FILE_COMM}:${CATKIN_WS}/src/covins/covins_comm/config/config_comm.yaml"     --volume "${LAUNCH_FILE}:${CATKIN_WS}/src/covins/orb_slam3/Examples/ROS/ORB_SLAM3/launch/launch_docker_ros_gazebo_hector_rgbd.launch"     --volume "/home/user1/ws/covins_ws/src/covins/orb_slam3/Examples/real_camera_hector_rgbd.yaml:${CATKIN_WS}/src/covins/orb_slam3/Examples/real_camera_hector_rgbd.yaml"     covins     /bin/bash -c             "cd ${CATKIN_WS};              source devel/setup.bash;              roslaunch ORB_SLAM3 launch_docker_ros_gazebo_hector_rgbd.launch"
-\`\`\`
+        CONFIG_FILE_COMM=$(absPath ${*: -2:1})
+        LAUNCH_FILE=$(absPath ${*: -1})
+        docker run \
+        -it \
+        --rm \
+        --net=host \
+        -env="DISPLAY"  \
+        --env="QT_X11_NO_MITSHM=1" \
+        --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+        --volume "${CONFIG_FILE_COMM}:${CATKIN_WS}/src/covins/covins_comm/config/config_comm.yaml" \
+        --volume "${LAUNCH_FILE}:${CATKIN_WS}/src/covins/orb_slam3/Examples/ROS/ORB_SLAM3/launch/launch_docker_ros_gazebo_agent0_rgbd.launch" \
+        --volume "/home/shirb/ws/covins_ws/src/covins/orb_slam3/Examples/real_camera_hector_rgbd.yaml:${CATKIN_WS}/src/covins/orb_slam3/Examples/real_camera_hector_rgbd.yaml" \
+        covins \
+        /bin/bash \
+       # /bin/bash -c \
+       #         "cd ${CATKIN_WS}; \
+        #         source devel/setup.bash; \
+         #        roslaunch ORB_SLAM3 launch_docker_ros_gazebo_agent0_rgbd.launch"
+```
 
 ---
 
