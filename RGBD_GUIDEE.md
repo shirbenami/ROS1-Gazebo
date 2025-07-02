@@ -10,7 +10,7 @@ This guide explains step-by-step how to enable and run the **RGBD** node in the 
 1. Open the `CMakeLists.txt` file:
 
    ```bash
-   nano /home/user1/ws/covins_ws/src/covins/orb_slam3/Examples/ROS/ORB_SLAM3/CMakeLists.txt
+   nano src/covins/orb_slam3/Examples/ROS/ORB_SLAM3/CMakeLists.txt
    ```
 
 2. Find the lines for the **RGBD** executable. Remove the `#` signs if they exist, so they look like this:
