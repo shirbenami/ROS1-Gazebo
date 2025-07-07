@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <!-- Load Gazebo with custom office world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="/root/catkin_ws/src/gazebo_models_worlds_collection/worlds/office_small_new_empty.world"/> 
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="paused" value="false"/>
+  </include>
+
+  <!-- Spawn first UAV (Agent 0) -->
+  <group ns="uav0">
+    <param name="tf_prefix" value="uav0_tf"/>
+    <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch">
+      <arg name="model" value="$(find hector_quadrotor_description)/urdf/quadrotor_hokuyo_utm30lx_new.gazebo.xacro"/>
+      <arg name="name" value="uav0"/>
+      <arg name="x" value="0"/>
+      <arg name="y" value="0"/>
+      <arg name="z" value="0.3"/>
+      <arg name="controllers" value="controller/attitude controller/velocity controller/position"/>
+    </include>
+  </group>
+
+  <!-- Spawn second UAV (Agent 1) -->
+  <group ns="uav1">
+    <param name="tf_prefix" value="uav1_tf"/>
+    <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch">
+      <arg name="model" value="$(find hector_quadrotor_description)/urdf/quadrotor_hokuyo_utm30lx_new.gazebo.xacro"/>
+      <arg name="name" value="uav1"/>
+      <arg name="x" value="1"/>
+      <arg name="y" value="1"/>
+      <arg name="z" value="0.3"/>
+      <arg name="controllers" value="controller/attitude controller/velocity controller/position"/>
+    </include>
+  </group>
+
+</launch>
+
+
