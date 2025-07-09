@@ -101,10 +101,13 @@ Ensure your SLAM node subscribes to the drone’s image topic- /uav(0/1)/front_c
 ## 🎥 **Demo Videos**
 
 * Multi-Drone SLAM Example:Example of two Hector Quadrotor drones connected to COVINS and performing collaborative ORB-SLAM3.
-* 👉 Watch video
+https://github.com/user-attachments/assets/edccc885-edbc-404a-808d-99ef9b829503
+
+
 
 * Color & Template Detection Example:Example of two drones (one red, one blue) detecting each other visually and exchanging azimuth information.
-* 👉 Watch video
+https://github.com/user-attachments/assets/828d169b-114c-484b-a46c-b86a95e07e40
+
 
 
 ## 📌 **Notes**
