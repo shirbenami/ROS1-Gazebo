@@ -98,6 +98,14 @@ rosrun drone_template_matcher template_matcher.py
 Ensure your SLAM node subscribes to the drone’s image topic- /uav(0/1)/front_cam/camera/image /uav(0/1)/raw_imu and so on.
 
 ---
+## 🎥 **Demo Videos**
+
+* Multi-Drone SLAM Example:Example of two Hector Quadrotor drones connected to COVINS and performing collaborative ORB-SLAM3.
+* 👉 Watch video
+
+* Color & Template Detection Example:Example of two drones (one red, one blue) detecting each other visually and exchanging azimuth information.
+* 👉 Watch video
+
 
 ## 📌 **Notes**
 
