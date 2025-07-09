@@ -1,0 +1,13 @@
+<launch>
+  <node pkg="drone_color_detector" type="color_detector.py" name="uav0_detector" output="screen">
+    <param name="color" value="blue"/>
+    <remap from="detected_drone_azimuth" to="/uav0/detected_drone_azimuth"/>
+    <remap from="/camera/image_raw" to="/uav0/camera/image_raw"/>
+  </node>
+
+  <node pkg="drone_color_detector" type="color_detector.py" name="uav1_detector" output="screen">
+    <param name="color" value="red"/>
+    <remap from="detected_drone_azimuth" to="/uav1/detected_drone_azimuth"/>
+    <remap from="/camera/image_raw" to="/uav1/camera/image_raw"/>
+  </node>
+</launch>

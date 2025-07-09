@@ -1,0 +1,8 @@
+<launch>
+  <node name="matcher_uav0" pkg="drone_template_matcher" type="template_matcher.py" output="screen">
+    <param name="camera_topic" value="/uav0/front_cam/camera/image"/>
+  </node>
+  <node name="matcher_uav1" pkg="drone_template_matcher" type="template_matcher.py" output="screen">
+    <param name="camera_topic" value="/uav1/front_cam/camera/image"/>
+  </node>
+</launch>

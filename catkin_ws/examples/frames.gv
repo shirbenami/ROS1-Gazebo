@@ -1,0 +1,13 @@
+digraph G {
+"world" -> "base_footprint"[label="Broadcaster: /uav1/ground_truth_to_tf\nAverage rate: 200.383 Hz\nMost recent transform: 4465.956 ( 0.002 sec old)\nBuffer length: 4.701 sec\n"];
+"base_footprint" -> "base_stabilized"[label="Broadcaster: /uav1/ground_truth_to_tf\nAverage rate: 200.383 Hz\nMost recent transform: 4465.956 ( 0.002 sec old)\nBuffer length: 4.701 sec\n"];
+"base_stabilized" -> "base_link"[label="Broadcaster: /uav1/ground_truth_to_tf\nAverage rate: 200.383 Hz\nMost recent transform: 4465.956 ( 0.002 sec old)\nBuffer length: 4.701 sec\n"];
+"base_link" -> "front_cam_link"[label="Broadcaster: /uav0/robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 4465.958 sec old)\nBuffer length: 0.000 sec\n"];
+"front_cam_link" -> "front_cam_optical_frame"[label="Broadcaster: /uav0/robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 4465.958 sec old)\nBuffer length: 0.000 sec\n"];
+"base_link" -> "laser0_frame"[label="Broadcaster: /uav0/robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 4465.958 sec old)\nBuffer length: 0.000 sec\n"];
+"base_link" -> "sonar_link"[label="Broadcaster: /uav0/robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 4465.958 sec old)\nBuffer length: 0.000 sec\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 4465.958"[ shape=plaintext ] ;
+ }->"world";
+}
