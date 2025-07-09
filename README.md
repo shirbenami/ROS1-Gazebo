@@ -94,123 +94,115 @@ ________________________________________________________________________________
 ______________________________________________________________________________________________________________
 ______________________________________________________________________________________________________________
 
-# 🐳 ROS1 Noetic + Gazebo 11 Docker Setup Guide
+# Hector Quadrotor Multi-Drone Simulation with ROS1 and Gazebo
 
-This guide walks you through creating a Docker-based development environment with:
+## Overview
 
-✅ ROS1 Noetic  
-✅ Gazebo 11  
-✅ `gazebo_ros_pkgs` for ROS-Gazebo integration  
-✅ GUI support (launch Gazebo with full display)  
-✅ 🐢 TurtleBot3 full simulation and teleoperation  
+This project provides a Docker-based environment that integrates **ROS1**, **Gazebo**, and the **Hector Quadrotor** package for multi-drone simulation. The goal is to create a flexible simulation platform for collaborative SLAM and inter-drone detection tasks.
+
+The project also connects the simulation to **ORB-SLAM3** and **COVINS** to test multi-agent SLAM scenarios. In addition, it implements visual detection methods such as template matching and color detection to enable drones to detect each other and share azimuth information.
 
 ---
 
-## 📁 Step 1: Create Project Folder and Dockerfile
+## Features
 
-First, create a working directory and a `Dockerfile`:
+✅ ROS1-based environment (Noetic or Melodic)
+✅ Gazebo simulation with Hector Quadrotor
+✅ Multi-drone setup (multiple UAVs in one simulation)
+✅ Integration with ORB-SLAM3 and COVINS for collaborative SLAM
+✅ Visual inter-drone detection (template matching, color detection)
+✅ Communication of detected azimuth between drones
 
-```bash
-mkdir -p ~/ros1_gazebo_docker && cd ~/ros1_gazebo_docker
-touch Dockerfile
+---
 
-  GNU nano 7.2                   Dockerfile                             
-FROM ros:melodic
+## What this project includes
 
-ENV DEBIAN_FRONTEND=noninteractive
+* **Dockerfile** to build a consistent environment with all required dependencies
+* Hector Quadrotor packages (`hector_quadrotor_description`, `hector_gazebo_plugins`, etc.)
+* Custom ROS packages for:
 
-RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key >
- && apt update && apt install -y \
-    git wget nano curl lsb-release gnupg2 \
-    python-rosdep python-catkin-tools \
-    ros-melodic-desktop-full \
-    ros-melodic-gazebo-ros-pkgs \
-    ros-melodic-gazebo-ros-control \
- && rm -rf /var/lib/apt/lists/*
+  * Visual detection (color and template matching)
+  * Publishing detection data as ROS topics
+* Launch files to spin up multiple drones
+* Example configuration for connecting to ORB-SLAM3 and COVINS
 
-RUN mkdir -p /root/catkin_ws/src
-WORKDIR /root/catkin_ws
+---
 
-RUN bash -c 'source /opt/ros/melodic/setup.bash && catkin_make'
+## How to use
 
-RUN echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc && \
-    echo "source /root/catkin_ws/devel/setup.bash" >> ~/.bashrc
+1. **Clone this repository**
 
-ENV DISPLAY=:0
+   ```bash
+   git clone <repository-url>
+   cd <repository>
+   ```
 
-```
+2. **Build the Docker image**
 
-## 🧱 Step 2: Build the Docker Image
+   ```bash
+   docker build -t hector-multi-drone .
+   ```
 
-From the project directory, build the Docker image:
+3. **Run the container**
 
-```bash
-docker build -t ros1-gazebo .
-```
+   ```bash
+   docker run -it --rm --name hector-sim hector-multi-drone
+   ```
 
-## 🖥️ Step 3: Run the Container with GUI Support
-If you're running on a local Ubuntu machine:
+4. **Launch the multi-drone simulation**
 
-```bash
-xhost +local:docker
-```
+   ```bash
+   source /catkin_ws/devel/setup.bash
+   roslaunch <your-multi-uav-launch-file>.launch
+   ```
 
-Then run the container:
-```bash
-docker run -it \
-  --name ros1-gazebo-container \
-  --env="DISPLAY=$DISPLAY" \
-  --env="QT_X11_NO_MITSHM=1" \
-  --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
-  --privileged \
-  ros1-gazebo
-```
+5. **Connect to ORB-SLAM3 / COVINS**
 
-## 🧪 Step 4: Test the Setup
-Inside the container:
-```bash
-roslaunch gazebo_ros empty_world.launch
-```
+   Make sure your SLAM back-end is running and subscribing to the image and pose topics published by the drones.
 
-## 🤖 Step 5: Add TurtleBot3 Simulation
-To automatically install and run the TurtleBot3 simulation, use the following script.
+6. **Run detection scripts**
 
-🧾 File: setup_turtlebot3.sh
-Inside the container, create the script:
+   ```bash
+   rosrun drone_color_detector color_detector.py
+   rosrun drone_template_matcher template_matcher.py
+   ```
 
-```bash
-nano setup_turtlebot3.sh
-Paste the following content:
-```
-```bash
-#!/bin/bash
+---
 
-  GNU nano 2.9.3  setup_turtlebot3_melodic.sh             
-
-mkdir -p ~/catkin_ws/src
-cd ~/catkin_ws/src
-
-git clone -b noetic-devel https://github.com/ROBOTIS-GIT/turtlebot3.git
-git clone -b noetic-devel https://github.com/ROBOTIS-GIT/turtlebot3_simulations.git
-
-cd ~/catkin_ws
-rosdep update
-rosdep install --from-paths src --ignore-src -r -y
-
-catkin_make
-
-echo "export TURTLEBOT3_MODEL=waffle" >> ~/.bashrc
-export TURTLEBOT3_MODEL=waffle
-
-source /opt/ros/melodic/setup.bash
-source devel/setup.bash
-
-roslaunch turtlebot3_gazebo turtlebot3_world.launch
+## Project structure
 
 ```
-
-Make it executable and run:
-```bash
-chmod +x setup_turtlebot3.sh
-./setup_turtlebot3.sh
+project-root/
+├── Dockerfile
+├── catkin_ws/
+│   ├── src/
+│   │   ├── hector_quadrotor
+│   │   ├── drone_color_detector
+│   │   ├── drone_template_matcher
+│   │   └── ...
+├── launch/
+│   ├── multi_uav.launch
+│   └── ...
+└── README.md
 ```
+
+---
+
+## Future work
+
+* Improve robustness of visual detection under different lighting conditions
+* Automate map merging in COVINS for larger multi-agent scenarios
+* Add additional sensors and integrate AprilTags
+
+---
+
+## License
+
+This project is open-source and available under the MIT License.
+
+Feel free to contribute, report issues, or open pull requests!
+
+---
+
+**Happy flying! 🚁**
+
