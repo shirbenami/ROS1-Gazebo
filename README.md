@@ -23,9 +23,9 @@ It is designed for simulating **Hector Quadrotor drones** in multi-drone scenari
 ## 🗂️ **Repository Structure**
 
 ```plaintext
-.
+
 ├── catkin_ws/
-│   ├── src/
+│   ├── hector_move/
 │   ├── src/
 │   │   ├── hector_quadrotor/
 │   │   ├── hector_gazebo/
