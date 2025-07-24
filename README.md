@@ -85,7 +85,7 @@ source devel/setup.bash
 5️⃣ **Launch the indoor world:**
 
 ```bash
-roslaunch hector_quadrotor_demo indoor_custom.launch
+roslaunch hector_quadrotor_demo gazebo_models_worlds_collection_2_agents.launch
 ```
 
 6️⃣ **Run detection scripts:**
