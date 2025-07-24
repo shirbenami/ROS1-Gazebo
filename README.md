@@ -88,14 +88,61 @@ source devel/setup.bash
 roslaunch hector_quadrotor_demo gazebo_models_worlds_collection_2_agents.launch
 ```
 
-6️⃣ **Run detection scripts:**
+
+6️⃣. **Takeoff Action for Each UAV**
+
+Use the following commands to trigger the takeoff:
+
+```bash
+rosrun actionlib axclient.py /uav0/action/takeoff
+rosrun actionlib axclient.py /uav1/action/takeoff
+```
+
+---
+
+7️⃣. **Command UAVs to Move Upward**
+
+Send altitude target (e.g., Z = 2.0 meters):
+
+```bash
+rostopic pub /uav0/command/pose geometry_msgs/PoseStamped '
+header:
+  frame_id: "world"
+pose:
+  position:
+    x: 0.0
+    y: 0.0
+    z: 2.0
+  orientation:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+'
+
+rostopic pub /uav1/command/pose geometry_msgs/PoseStamped '
+header:
+  frame_id: "world"
+pose:
+  position:
+    x: 0.0
+    y: 2.0
+    z: 2.25
+  orientation:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+'
+
+ 8. **Run detection scripts:**
 
 ```bash
 rosrun drone_color_detector color_detector.py
 rosrun drone_template_matcher template_matcher.py
 ```
 
-7️⃣ **Connect ORB-SLAM3 / COVINS:**
+9. **Connect ORB-SLAM3 / COVINS:**
 Ensure your SLAM node subscribes to the drone’s image topic- /uav(0/1)/front_cam/camera/image /uav(0/1)/raw_imu and so on.
 
 ---
