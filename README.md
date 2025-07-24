@@ -134,7 +134,7 @@ pose:
     z: 0.0
     w: 1.0
 '
-
+```
  8. **Run detection scripts:**
 
 ```bash
