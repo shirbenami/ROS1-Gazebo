@@ -297,7 +297,7 @@ header:
 pose:
   position:
     x: 0.0
-    y: 0.0
+    y: 2.0
     z: 2.25
   orientation:
     x: 0.0
