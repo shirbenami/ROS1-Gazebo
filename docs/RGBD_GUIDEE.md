@@ -154,3 +154,24 @@ After starting, check `rqt_graph` to ensure:
 ---
 
 Good luck! 🚀✨
+
+
+* for visual of orb slam in mono- imu : 
+go to src/covins/orb_slam3/Examples/ROS/ORB_SLAM3/src/ros_mono_inertial.cc
+change
+```
+  // Create SLAM system. It initializes all system threads and gets ready to process frames.
+  ORB_SLAM3::System SLAM(argv[1],argv[2],ORB_SLAM3::System::IMU_MONOCULAR,covins_params::orb::activate_visualization);
+```
+to 
+```
+  // Create SLAM system. It initializes all system threads and gets ready to process frames.
+  ORB_SLAM3::System SLAM(argv[1],argv[2],ORB_SLAM3::System::IMU_MONOCULAR,true);
+```
+
+and run 
+
+```bash
+cd ~/covins_ws
+catkin build
+```
