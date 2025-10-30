@@ -93,6 +93,11 @@ roslaunch hector_quadrotor_demo gazebo_models_worlds_collection_2_agents.launch
 
 Use the following commands to trigger the takeoff:
 
+
+```bash
+docker exec -it hector-multi-drone /bin/bash
+```
+
 ```bash
 rosrun actionlib axclient.py /uav0/action/takeoff
 rosrun actionlib axclient.py /uav1/action/takeoff
